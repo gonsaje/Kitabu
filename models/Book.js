@@ -10,6 +10,13 @@ const BookSchema = new Schema({
       type: String,
       required: true
     },
+    refNum: {
+
+    },
+    collectionId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Collection'
+    },
     donorId: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -20,4 +27,4 @@ const BookSchema = new Schema({
     },
   })
 
-module.exports = User = mongoose.model('users', UserSchema);
+module.exports = User = mongoose.model('Book', BookSchema);

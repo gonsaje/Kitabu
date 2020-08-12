@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const locationSchema = require('./Location');
 
 const UserSchema = new Schema({
     username: {
@@ -15,13 +14,17 @@ const UserSchema = new Schema({
       type: String,
       required: true
     },
-    class: {
-      type: String,
-      required: true
-    },
-    location: {
-      type: locationSchema,
-      required: true
+    // class: {
+    //   type: String,
+    //   required: true
+    // },
+    // location: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'Location',
+    //   required: true
+    // },
+    points: {
+      type: Number
     },
     date: {
       type: Date,
@@ -29,4 +32,4 @@ const UserSchema = new Schema({
     },
   })
 
-module.exports = User = mongoose.model('users', UserSchema);
+module.exports = User = mongoose.model('User', UserSchema);

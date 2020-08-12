@@ -12,10 +12,10 @@ mongoose
   .then(() => console.log("Connected to MongoDB successfully"))
   .catch(err => console.log(err));
 
-app.get("/", (req, res) => res.send("Kitabu API"));
+app.get("/", (req, res) => res.send("Kitabu"));
 
 app.use(passport.initialize());
-// require('./config/passport')(passport);
+// require('./passport/passport')(passport);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
