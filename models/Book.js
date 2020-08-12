@@ -10,6 +10,10 @@ const BookSchema = new Schema({
       type: String,
       required: true
     },
+    donorId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     date: {
       type: Date,
       default: Date.now

@@ -6,9 +6,9 @@ const CollectionSchema = new Schema({
       type: String,
       required: true
     },
-    userId: {
-      type: String,
-      required: true
+    partnerId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     date: {
       type: Date,

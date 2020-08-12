@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const locationSchema = require('./Location');
 
 const UserSchema = new Schema({
     username: {
@@ -14,14 +15,18 @@ const UserSchema = new Schema({
       type: String,
       required: true
     },
+    class: {
+      type: String,
+      required: true
+    },
+    location: {
+      type: locationSchema,
+      required: true
+    },
     date: {
       type: Date,
       default: Date.now
     },
-    class: {
-      type: String,
-      required: true
-    }
   })
 
 module.exports = User = mongoose.model('users', UserSchema);
