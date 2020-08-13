@@ -14,17 +14,18 @@ const UserSchema = new Schema({
       type: String,
       required: true
     },
-    // class: {
-    //   type: String,
-    //   required: true
-    // },
-    // location: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'Location',
-    //   required: true
-    // },
+    class: {
+      type: String,
+      required: true
+    },
+    location: {
+      type: Schema.Types.ObjectId,
+      ref: 'Location',
+      required: true
+    },
     points: {
-      type: Number
+      type: Number,
+      default: 0
     },
     date: {
       type: Date,

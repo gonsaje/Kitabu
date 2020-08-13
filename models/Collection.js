@@ -6,7 +6,7 @@ const CollectionSchema = new Schema({
       type: String,
       required: true
     },
-    partnerId: {
+    donorId: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },

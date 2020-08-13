@@ -10,8 +10,9 @@ const BookSchema = new Schema({
       type: String,
       required: true
     },
-    refNum: {
-
+    ISBN: {
+        type:String,
+        required: true
     },
     collectionId: {
         type: Schema.Types.ObjectId,

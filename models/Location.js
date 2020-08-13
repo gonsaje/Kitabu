@@ -6,10 +6,6 @@ const LocationSchema = new Schema({
         type: String,
         required: true
     },
-    // location: {
-    //     type: pointSchema,
-    //     required: true
-    // }
     location: {
         type: Schema.Types.ObjectId,
         ref: 'Point'
