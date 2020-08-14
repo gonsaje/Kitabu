@@ -7,16 +7,13 @@ const BookSchema = new Schema({
       required: true
     },
     author: {
-      type: String,
+      type: [String],
       required: true
     },
     ISBN: {
         type:String,
-        required: true
-    },
-    collectionId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Collection'
+        required: true,
+        default: "0000000000000"
     },
     donorId: {
         type: Schema.Types.ObjectId,

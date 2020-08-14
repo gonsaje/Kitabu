@@ -10,10 +10,14 @@ const CollectionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    books: {
+        
+    },
     date: {
       type: Date,
       default: Date.now
     },
+
   })
 
 module.exports = Collection = mongoose.model('Collection', CollectionSchema);

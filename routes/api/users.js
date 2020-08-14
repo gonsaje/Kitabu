@@ -21,7 +21,7 @@ router.get("/test", (req, res) => res.json({ msg: "This is the users route" }));
 
 router.post('/register', (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
-
+  console.log(req.body)
   if (!isValid) {
     return res.status(400).json(errors);
   }
@@ -33,11 +33,10 @@ router.post('/register', (req, res) => {
           return res.status(400).json({email: "A user has already registered with this address"})
         } else {
           const newUser = new User({
-            username: req.body.username,
             email: req.body.email,
             password: req.body.password,
             class: req.body.class,
-            location: req.body.location
+         
           })
 
           bcrypt.genSalt(10, (err, salt) => {
@@ -45,7 +44,7 @@ router.post('/register', (req, res) => {
               if (err) throw err;
               newUser.password = hash;
               newUser.save()
-                .then(user => res.json(user))
+                .then(user => {res.json(user)})
                 .catch(err => console.log(err));
             })
           })
@@ -93,6 +92,11 @@ router.post('/register', (req, res) => {
             }
         })
       })
+  })
+
+  router.get("/index", (res,req) => {
+    User.find({class: "Collector"})
+
   })
 
 module.exports = router;
