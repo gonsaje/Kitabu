@@ -32,17 +32,18 @@ router.post('/register', (req, res) => {
         if (user) {
           return res.status(400).json({email: "A user has already registered with this address"})
         } else {
+          const geoObj = {type: "Point", coordinates: req.body.location.coordinates}
           let newUser;
-          if (req.body.class === "Donor") {
+          if (req.body.class.toLowerCase() === "donor") {
             
             newUser = new User({
               email: req.body.email,
               password: req.body.password,
               class: req.body.class,
-              location: req.body.location
+              location: geoObj
            
             })
-          } else if (req.body.class === "Collector") {
+          } else if (req.body.class.toLowerCase() === "collector") {
             const {address, phone, hours, orgName} = req.body
             const newCollector = {address,phone, hours, orgName};
               for (const [key, value] of Object.entries(newCollector)) {
@@ -55,7 +56,7 @@ router.post('/register', (req, res) => {
                 email: req.body.email,
                 password: req.body.password,
                 class: req.body.class,
-                location: req.body.location,
+                location: geoObj,
                 address: req.body.address,
                 phone: req.body.phone,
                 hours: req.body.hours,
