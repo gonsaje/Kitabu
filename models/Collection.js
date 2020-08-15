@@ -6,10 +6,25 @@ const CollectionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    // books: [{
+    //     id: { type: Schema.Types.ObjectId, 
+    //             ref: 'Book'
+    //         }}],
     books: [{
-        id: { type: Schema.Types.ObjectId, 
-                ref: 'Book'
-            }}],
+        title: {
+            type: String,
+        },
+        authors: {
+            type: [String],
+        },
+        ISBN: {
+            type: String
+        },
+        donorId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    }],
     status: {
         type: String,
         default: "Pending"
