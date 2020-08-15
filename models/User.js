@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    username: {
-      type: String,
-      required: true
-    },
     email: {
       type: String,
       required: true
@@ -18,11 +14,10 @@ const UserSchema = new Schema({
       type: String,
       required: true
     },
-    location: {
-      type: Schema.Types.ObjectId,
-      ref: 'Location',
+    coordinates: {
+      type: [Number],
       required: true
-    },
+  },
     points: {
       type: Number,
       default: 0

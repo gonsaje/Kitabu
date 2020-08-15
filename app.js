@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 
 const users = require("./routes/api/users");
+const books = require("./routes/api/books");
 
 mongoose
   .connect(db, { useNewUrlParser: true })
@@ -17,11 +18,12 @@ app.get("/", (req, res) => res.send("Kitabu"));
 app.use(passport.initialize());
 // require('./passport/passport')(passport);
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use("/api/users", users);
-
+app.use("/api/books", books);
+// app.use("/api/collections", collections);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server is running on port ${port}`));
