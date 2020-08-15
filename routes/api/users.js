@@ -11,17 +11,16 @@ const validateLoginInput = require('../../validation/login');
 
 router.get("/test", (req, res) => res.json({ msg: "This is the users route" }));
 
-// router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
-//     res.json({
-//       id: req.user.id,
-//       username: req.user.username,
-//       email: req.user.email
-//     });
-//   })
+router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
+    res.json({
+      id: req.user.id,
+      email: req.user.email
+    });
+  })
 
 router.post('/register', (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
-  console.log(req.body)
+  // console.log(req.body)
   if (!isValid) {
     return res.status(400).json(errors);
   }
@@ -56,7 +55,7 @@ router.post('/register', (req, res) => {
   router.post('/login', (req, res) => {
     const { errors, isValid } = validateLoginInput(req.body);
 
-    console.log(errors);
+    // console.log(errors);
 
     if (!isValid) {
       return res.status(400).json(errors);
@@ -94,9 +93,34 @@ router.post('/register', (req, res) => {
       })
   })
 
+router.patch("/:id/drive", (req, res) => {
+  let collector = User.findById(req.params.id);
+  if (collector) {
+    collector.drive = req.body.drive;
+
+
+  }
+}) 
+
   router.get("/index", (res,req) => {
     User.find({class: "Collector"})
+    .then(collectors => {
+      return res.json(collectors)
+    })
+  })
 
+  router.patch("/:id", (req, res) => {
+    let user = User.findById(req.params.id);
+    if (user) {
+      user.email = req.body.email;
+      user.address = req.body.address;
+
+      user.save()
+      .then(() => res.json("Profile Updated"))
+      .catch(err =>  res.status(400).json(err))
+    } else {
+      return res.status(404)
+    }
   })
 
 module.exports = router;

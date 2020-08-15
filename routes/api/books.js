@@ -14,30 +14,18 @@ router.post('/new', async (req,res) => {
         donorId: req.body.donorId
     })
     await book.save()
-    console.log(req.body)
+    // console.log(req.body)
     let user = await User.findById(req.body.donorId)
     if (user) { 
         user.points += 1
         await user.save()
     } else res.sendStatus(404)
-    return res.json(book)
     
   } catch (error) {
-    console.log(error)
-    return res.sendStatus(500)
+    // console.log(error)
+    return res.sendStatus(400)
   }
-
-    // User.findById({id: req.body.donorId})
-    // .then(user =>{
-    //     user.points += 1;
-    //     user.update();
-
-    // })
-
-    // book.save().then( () => {
-    //     return res.json(book);
-    // })
-})
+});
 
 router.get("/index", (req,res) => {
     Book.find({ donorId: req.query.donorId })
@@ -48,6 +36,28 @@ router.get("/index", (req,res) => {
         return res.status(404).json({ notfound: "No Books Found for User" })
       }
     })
+})
+
+router.patch("/:id", (req,res) => {
+    let book = Book.findById(req.params.id)
+    if (book) {
+        book.title = req.body.title;
+        book.authors = req.body.authors;
+        book.ISBN = req.body.ISBN;
+
+        book.save()
+        .then(() => res.json("Book Updated"))
+        .catch(err => res.status(400).json(err))
+    } else {
+        return res.status(404).json({notfound: "Book Not Found"})
+    }
+
+});
+
+router.delete("/:id", (req,res) => {
+    Book.findByIdAndDelete(req.params.id)
+    .then(() => res.json("Book Removed"))
+    .catch(err => res.json(err));
 })
 
 module.exports = router;

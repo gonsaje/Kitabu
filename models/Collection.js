@@ -2,16 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CollectionSchema = new Schema({
-    title: {
-      type: String,
-      required: true
-    },
     donorId: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    books: {
-        
+    books: [{
+        id: { type: Schema.Types.ObjectId, 
+                ref: 'Book'
+            }}],
+    status: {
+        type: String,
+        default: "Pending"
+    },
+    points: {
+        type: Number,
+        default: 0
     },
     date: {
       type: Date,

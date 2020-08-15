@@ -14,11 +14,10 @@ const UserSchema = new Schema({
       type: String,
       required: true
     },
-    // location: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'Location',
-    //   required: true
-    // },
+    coordinates: {
+      type: [Number],
+      required: true
+  },
     points: {
       type: Number,
       default: 0
