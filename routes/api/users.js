@@ -39,7 +39,7 @@ router.post('/register', (req, res) => {
               email: req.body.email,
               password: req.body.password,
               class: req.body.class,
-              coordinates: req.body.coordinates
+              location: req.body.location
            
             })
           } else if (req.body.class === "Collector") {
@@ -55,7 +55,7 @@ router.post('/register', (req, res) => {
                 email: req.body.email,
                 password: req.body.password,
                 class: req.body.class,
-                coordinates: req.body.coordinates,
+                location: req.body.location,
                 address: req.body.address,
                 phone: req.body.phone,
                 hours: req.body.hours,
@@ -147,14 +147,31 @@ router.put("/:id/drive", (req, res) => {
 }) 
 
 router.get("/index", (req,res) => {
-  User.find({class: "Collector"})
-  .then(collectors => {
-      if (collectors) {
-        return res.json(collectors)
-      } else{
-        return res.status(404).json({ notfound: "No Collectors Found" })
-      }    
-    })
+  const {coordinates} = req.body;
+  const long = coordinates.long;
+  const latt = coordinates.latt;
+
+  User.find({class: "Collector", location: {
+    $near: {
+      $maxDistance:30000,
+      $geometry: {
+        type: "Point",
+        coordinates: [long, latt]
+      }
+    }
+  }}).find((error, results) => {
+    if (error) res.status(404).json(error);
+    res.status(200).json(results)
+    console.log(results)
+  })
+
+  // .then(collectors => {
+  //     if (collectors) {
+  //       return res.json(collectors)
+  //     } else{
+  //       return res.status(404).json({ notfound: "No Collectors Found" })
+  //     }    
+  //   })
 })
 
   router.put("/:id", (req, res) => {

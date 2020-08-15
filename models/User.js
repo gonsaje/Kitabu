@@ -16,10 +16,10 @@ const UserSchema = new Schema({
       type: String,
       required: true
     },
-    coordinates: {
-      type: [Number],
-      required: true
-  },
+    location: {
+      type: {type:String},
+      coordinates: []
+    },
     points: {
       type: Number,
       default: 0
@@ -29,6 +29,8 @@ const UserSchema = new Schema({
       default: Date.now
     },
   }, options)
+
+  UserSchema.index({location:"2dsphere"});
 
 const User = mongoose.model("User", UserSchema)
 
