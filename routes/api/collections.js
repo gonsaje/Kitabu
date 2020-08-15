@@ -48,3 +48,6 @@ router.patch('/:id', (req,res) => {
             return res.status(404).json({notfound:'Collection Not Found'})
         }
 })
+
+
+module.exports = router
