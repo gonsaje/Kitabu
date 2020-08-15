@@ -48,11 +48,3 @@ router.patch('/:id', (req,res) => {
             return res.status(404).json({notfound:'Collection Not Found'})
         }
 })
-
-// router.delete("/:id", (req,res) => {
-//     Collection.findByIdAndDelete(req.params.id)
-//     .then(() => {res.redirect('')})
-//     .catch(err => console.log(err));
-// })
-
-// router.delete("/cancel", (res,req))
