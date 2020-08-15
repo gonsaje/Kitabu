@@ -49,10 +49,10 @@ router.patch('/:id', (req,res) => {
         }
 })
 
-router.delete("/:id", (req,res) => {
-    Collection.findByIdAndDelete(req.params.id)
-    .then(() => {res.redirect('')})
-    .catch(err => console.log(err));
-})
+// router.delete("/:id", (req,res) => {
+//     Collection.findByIdAndDelete(req.params.id)
+//     .then(() => {res.redirect('')})
+//     .catch(err => console.log(err));
+// })
 
-router.delete("/cancel", (res,req))
+// router.delete("/cancel", (res,req))
