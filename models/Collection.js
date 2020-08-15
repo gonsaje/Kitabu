@@ -6,10 +6,6 @@ const CollectionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    // books: [{
-    //     id: { type: Schema.Types.ObjectId, 
-    //             ref: 'Book'
-    //         }}],
     books: [{
         title: {
             type: String,
@@ -20,9 +16,11 @@ const CollectionSchema = new Schema({
         ISBN: {
             type: String
         },
-        donorId: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
+        image: {
+            type: String
+        },
+        condition: {
+            type: String
         }
     }],
     status: {

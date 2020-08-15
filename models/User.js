@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const options = {discriminatorKey: "class", collection: "users"}
+
 const UserSchema = new Schema({
     email: {
       type: String,
@@ -26,6 +28,38 @@ const UserSchema = new Schema({
       type: Date,
       default: Date.now
     },
-  })
+  }, options)
 
-module.exports = User = mongoose.model('User', UserSchema);
+const User = mongoose.model("User", UserSchema)
+
+
+const Collector =  User.discriminator('Collector', new Schema({
+  address: {
+      type: String,
+      required: true
+  },
+  drive: [],
+  phone: {
+      type: String,
+      required: true
+  },
+  hours: {
+      type: String,
+      required: true
+  },
+  orgName: {
+      type: String,
+      required: true
+  },
+  description: {
+      type: String
+  }
+}))
+
+
+const Collectora = mongoose.model("Collector")
+
+module.exports = {
+  User,
+  Collectora
+}

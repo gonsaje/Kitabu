@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const User = require('../../models/User');
+const {User, Collectora} = require('../../models/User');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
@@ -19,31 +19,75 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
   })
 
 router.post('/register', (req, res) => {
+  console.log(req.body)
   const { errors, isValid } = validateRegisterInput(req.body);
   // console.log(req.body)
   if (!isValid) {
     return res.status(400).json(errors);
   }
 
-    // Check to make sure nobody has already registered with a duplicate email
+  // Check to make sure nobody has already registered with a duplicate email
     User.findOne({ email: req.body.email })
       .then(user => {
         if (user) {
           return res.status(400).json({email: "A user has already registered with this address"})
         } else {
-          const newUser = new User({
-            email: req.body.email,
-            password: req.body.password,
-            class: req.body.class,
-         
-          })
-
+          let newUser;
+          if (req.body.class === "Donor") {
+            
+            newUser = new User({
+              email: req.body.email,
+              password: req.body.password,
+              class: req.body.class,
+              coordinates: req.body.coordinates
+           
+            })
+          } else if (req.body.class === "Collector") {
+            const {address, phone, hours, orgName} = req.body
+            const newCollector = {address,phone, hours, orgName};
+              for (const [key, value] of Object.entries(newCollector)) {
+                 if (value === null)
+                    return res.status(400).json({
+                    error: { message: `Missing '${key}' in request body` },
+                });
+              }
+              newUser = new Collectora({
+                email: req.body.email,
+                password: req.body.password,
+                class: req.body.class,
+                coordinates: req.body.coordinates,
+                address: req.body.address,
+                phone: req.body.phone,
+                hours: req.body.hours,
+                orgName: req.body.orgName,
+                description: req.body.description
+           
+              })
+              
+          }
+          
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               if (err) throw err;
               newUser.password = hash;
               newUser.save()
-                .then(user => {res.json(user)})
+                .then(user => {
+                  const payload = {
+                    id: user.id,
+                    email: user.email
+                  };
+                  jwt.sign(
+                    payload,
+                    keys.secretOrKey,
+                    { expiresIn: 3600 },
+                    (err, token) => {
+                      res.json({
+                        success: true,
+                        token: "Bearer " + token
+                      });
+                    }
+                  );
+                })
                 .catch(err => console.log(err));
             })
           })
@@ -93,23 +137,27 @@ router.post('/register', (req, res) => {
       })
   })
 
-router.patch("/:id/drive", (req, res) => {
-  let collector = User.findById(req.params.id);
-  if (collector) {
+router.put("/:id/drive", (req, res) => {
+  User.findById(req.params.id, (err,collector) => {
     collector.drive = req.body.drive;
-
-
-  }
+    collector.save()
+    .then(collector => res.json(collector))
+    .catch(err => res.status(400).json(err));
+  });
 }) 
 
-  router.get("/index", (res,req) => {
-    User.find({class: "Collector"})
-    .then(collectors => {
-      return res.json(collectors)
+router.get("/index", (req,res) => {
+  User.find({class: "Collector"})
+  .then(collectors => {
+      if (collectors) {
+        return res.json(collectors)
+      } else{
+        return res.status(404).json({ notfound: "No Collectors Found" })
+      }    
     })
-  })
+})
 
-  router.patch("/:id", (req, res) => {
+  router.put("/:id", (req, res) => {
     let user = User.findById(req.params.id);
     if (user) {
       user.email = req.body.email;
