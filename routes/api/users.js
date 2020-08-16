@@ -152,16 +152,16 @@ router.put("/:id/drive", (req, res) => {
 }) 
 
 router.get("/index", (req,res) => {
-  const {coordinates} = req.body;
-  const long = coordinates.long;
-  const latt = coordinates.latt;
 
+  const longitude = req.query.long;
+  const lattitude = req.query.latt;
+  console.log(req.query)
   User.find({class: "Collector", location: {
     $near: {
-      $maxDistance:30000,
+      // $maxDistance:500000,
       $geometry: {
         type: "Point",
-        coordinates: [long, latt]
+        coordinates: [longitude, lattitude]
       }
     }
   }}).find((error, results) => {
