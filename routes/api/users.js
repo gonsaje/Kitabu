@@ -156,13 +156,14 @@ router.get("/index", (req,res) => {
 
   const longitude = req.query.long;
   const lattitude = req.query.latt;
-  console.log(req.query)
+  console.log(req.query.long)
+  console.log(req.query.latt)
   User.find({class: "collector", location: {
     $near: {
       // $maxDistance:500000,
       $geometry: {
         type: "Point",
-        coordinates: [longitude, lattitude]
+        coordinates: [-73.055096, 30.745951]
       }
     }
   }}).find((error, results) => {
@@ -180,7 +181,19 @@ router.get("/index", (req,res) => {
   //   })
 })
 
-  router.put("/:id", (req, res) => {
+router.get("/user/:id", (req, res) => {
+  User.findById(req.params.id)
+  .then(user => {
+    if (user) {
+        return res.json(user)
+    } else {
+        return res.status(404).json({notfound: "User  Not Found"})
+    }
+  }) 
+  .catch(err => res.json(err))
+})
+
+router.put("/:id", (req, res) => {
     let user = User.findById(req.params.id);
     if (user) {
       user.email = req.body.email;
