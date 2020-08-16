@@ -18,7 +18,7 @@ router.post("/new", (req,res) => {
 })
 
 router.get("/:id/index", (req,res) => {
-    Collection.find({donorId: req.params.donorId})
+    Collection.find({donorId: req.params.id})
     .then(collections => {
         if (collections) {
             return res.json(collections);
