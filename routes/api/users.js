@@ -37,6 +37,7 @@ router.post('/register', (req, res) => {
           if (req.body.class.toLowerCase() === "donor") {
             
             newUser = new User({
+              name: req.body.name,
               email: req.body.email,
               password: req.body.password,
               class: req.body.class,
@@ -53,6 +54,7 @@ router.post('/register', (req, res) => {
                 });
               }
               newUser = new Collectora({
+                name: req.body.name,
                 email: req.body.email,
                 password: req.body.password,
                 class: req.body.class,
