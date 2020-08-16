@@ -37,6 +37,7 @@ router.get("/:id", (req,res) => {
             return res.status(404).json({notfound: "Collection Not Found"})
         }
     }) 
+    .catch(err => res.json(err))
 })
 
 router.put('/:id', (req,res) => {
