@@ -17,7 +17,7 @@ router.post("/new", (req,res) => {
     })
 })
 
-router.get("/index", (req,res) => {
+router.get("/:id/index", (req,res) => {
     Collection.find({donorId: req.body.donorId})
     .then(collections => {
         if (collections) {
