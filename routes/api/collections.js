@@ -6,15 +6,16 @@ const Collection = require('../../models/Collection');
 
 router.get("/test", (req, res) => res.json({ msg: "This is the collections route" }));
 
-router.post("/new", (req,res) => {
-
-    let collection = new Collection ({
-        donorId: req.body["donorId"],
-        books: req.body["books"]
-    })
-    collection.save().then( () => {
-        return res.json(collection);
-    })
+router.post("/new", async (req,res) => {
+    try {
+        let collection = new Collection();
+        collection.donorId = req.body["donorId"]
+        collection.books = req.body["books"];
+        await collection.save();
+        return res.json((collection))
+    } catch (err) {
+        return res.sendStatus(400)
+    }
 })
 
 router.get("/:id/index", (req,res) => {
